@@ -1,0 +1,21 @@
+
+body{
+  &.ui-dark .navbar-gitlab {
+    background: #000 !important;
+  }
+  .identicon.bg1,
+  .identicon.bg2,
+  .identicon.bg3,
+  .identicon.bg4,
+  .identicon.bg5,
+  .identicon.bg6,
+  .identicon.bg7{
+    background: #eee;
+  }
+  .identicon{
+    // color: #fff;
+  }
+  .header-user-avatar{
+    border: none;
+  }
+}

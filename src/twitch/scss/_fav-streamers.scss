@@ -1,0 +1,53 @@
+// css class generator for streamer prio 
+@mixin setStreamerPrio($color) {
+	.live-channel-card {
+		opacity: 1 !important;
+	}
+
+
+	.tw-hover-accent-effect__corner--top {
+		border-right: .6rem solid $color !important;
+	}
+
+	.tw-hover-accent-effect__corner--bottom {
+		border-top: .6rem solid $color !important;
+	}
+
+	.tw-hover-accent-effect__edge {
+		background: $color !important;
+	}
+
+	// ===
+	.tw-media-card-meta__links div:first-of-type a {
+		color: $color !important;
+	}
+
+	.tw-channel-status-text-indicator {
+		background: $color;
+		color: #202020 !important;
+	}
+
+	.tw-avatar img {
+		border: 3px solid $color !important;
+	}
+
+	*:hover {
+		color: lighten($color, 10) !important;
+	}
+}
+
+.top-tier {
+	@include setStreamerPrio(gold);
+}
+
+.beta-tier {
+	@include setStreamerPrio( orange);
+}
+
+.overwatch {
+	@include setStreamerPrio(darkorange);
+}
+
+.wink {
+	@include setStreamerPrio(pink);
+}

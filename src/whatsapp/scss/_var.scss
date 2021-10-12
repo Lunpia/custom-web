@@ -1,0 +1,42 @@
+
+// privacy, hide personal information
+$privacy: false;
+
+// theme colors
+$theme-color: gold;
+
+// dark colors
+$h: 240;
+$s: 12;
+
+$dark-0: hsl($h, $s, 0%);
+$dark-1: hsl($h, $s, 2%);
+$dark-2: hsl($h, $s, 4%);
+$dark-3: hsl($h, $s, 6%);
+$dark-4: hsl($h, $s, 8%);
+$dark-5: hsl($h, $s, 10%);
+$dark-6: hsl($h, $s, 12%);
+$dark-7: hsl($h, $s, 14%);
+$dark-8: hsl($h, $s, 16%);
+$dark-9: hsl($h, $s, 18%);
+$dark-10: hsl($h, $s, 20%);
+$dark-20: hsl($h, $s, 40%);
+
+$dark-transparent-0: transparentize($dark-0, .05);
+
+// white colors
+$white-0: hsl(0, 0, 100%);
+$white-1: hsl(0, 0, 80%);
+$white-2: hsl(0, 0, 60%);
+
+// other colors
+$d: #DF3333;
+
+// group chat colors
+$chat-color-1: #fff;
+$chat-color-2: #f92672;
+$chat-color-3: #fd971f;
+$chat-color-4: #66d9ef;
+$chat-color-5: #a6e22e;
+$chat-color-6: #696969;
+$chat-color-7: #e69f66;

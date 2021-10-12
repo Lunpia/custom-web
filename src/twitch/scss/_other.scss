@@ -1,0 +1,51 @@
+// default stream profile overwrites
+.live-channel-card {
+	opacity: 0.7;
+	transition: opacity .2s;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	.tw-hover-accent-effect__corner--top {
+		border-right: .6rem solid $purple !important;
+	}
+
+	.tw-hover-accent-effect__corner--bottom {
+		border-top: .6rem solid $purple !important;
+	}
+
+	.tw-hover-accent-effect__edge {
+		background: $purple !important;
+	}
+
+	// ==
+	.tw-media-card-meta__links div:first-of-type a {
+		color: $purple !important;
+	}
+}
+
+// purple twitch username
+.tw-media-card-meta__links div:first-of-type a {
+	color: $purple;
+}
+
+// purple theatre mode button
+*[data-a-target="player-theatre-mode-button"] * {
+	fill: $purple !important;
+}
+
+// purple mini player button
+#bttv-picture-in-picture * {
+	fill: $purple !important;
+}
+
+// hide chat alert on old player-streaminfo__viewers
+.video-chat__header.tw-flex {
+	display: none !important;
+}
+
+// BTTV emote button
+#emote-menu-button {
+	opacity: 0.2 !important;
+}

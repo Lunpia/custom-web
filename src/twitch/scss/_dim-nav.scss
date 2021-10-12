@@ -1,0 +1,29 @@
+$nav: '.top-nav';
+$channelHeader: '.channel-header';
+$sidebar: '.side-nav';
+$channelInfoBar: '.channel-info-content';
+
+$items: $nav $channelHeader $sidebar $channelInfoBar;
+
+@each $item in $items {
+    #{$item} {
+        transition: opacity .25s;
+        opacity: .3;
+        z-index: 999;
+    }
+
+    body:hover #{$item} {
+        opacity: .6;
+        // opacity: 1;
+    }
+
+    body #{$item}:hover {
+        opacity: 1;
+    }
+}
+
+
+
+#{$sidebar} {
+    z-index: 999;
+}

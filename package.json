@@ -1,0 +1,29 @@
+{
+  "name": "custom-web",
+  "version": "1.0.0",
+  "description": "Basic SCSS and JS compiler used to customize webpages",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Robbsnor/custom-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Robbsnor/custom-web/issues"
+  },
+  "homepage": "https://github.com/Robbsnor/custom-web#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-sass": "^4.0.2"
+  },
+  "dependencies": {
+    "gulp-webpack": "^1.5.0"
+  }
+}

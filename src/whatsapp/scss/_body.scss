@@ -1,0 +1,19 @@
+html,
+body{
+
+    // body background
+    .app-wrapper-web {
+        background-color: $dark-0;
+    }
+
+    // background stripe
+    ._347-w::after{
+        display: none;
+    }
+
+    // center app
+    .app{
+        border-radius: 20px !important;
+    }
+
+}

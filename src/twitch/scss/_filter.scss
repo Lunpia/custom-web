@@ -1,0 +1,45 @@
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.filter {
+    $self: &;
+
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid #202020;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+    user-select: none;
+
+    &:hover,
+    &--active {
+        background-color: #202020;
+        border-color: $purple;
+    }
+
+    
+    &--favourites {
+        border-color: darken(gold, 20%);
+
+        &:hover {
+            border-color: lighten(gold, 20%);
+        }
+
+        &#{$self}--active {
+            border-color:gold;
+        }
+    }
+}
+
+.is-in-filter {
+    order: -10;
+}
+
+.is-hidden {
+    display: none;
+}
