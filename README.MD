@@ -14,7 +14,7 @@ These plugins are used to launch a local server to load local css and js files
 
 [Extra info over Witchcraft](https://luciopaiva.com/witchcraft/).
 
-4. Install packages
+4. Install packages (node 14)
 ```
 npm ci
 ```
