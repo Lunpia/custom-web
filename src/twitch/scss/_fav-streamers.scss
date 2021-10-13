@@ -1,53 +1,107 @@
-// css class generator for streamer prio 
-@mixin setStreamerPrio($color) {
-	.live-channel-card {
-		opacity: 1 !important;
-	}
-
-
-	.tw-hover-accent-effect__corner--top {
-		border-right: .6rem solid $color !important;
-	}
-
-	.tw-hover-accent-effect__corner--bottom {
-		border-top: .6rem solid $color !important;
-	}
-
-	.tw-hover-accent-effect__edge {
-		background: $color !important;
-	}
-
-	// ===
-	.tw-media-card-meta__links div:first-of-type a {
-		color: $color !important;
-	}
-
-	.tw-channel-status-text-indicator {
-		background: $color;
-		color: #202020 !important;
-	}
-
-	.tw-avatar img {
-		border: 3px solid $color !important;
-	}
-
-	*:hover {
-		color: lighten($color, 10) !important;
+%stroke--right {
+	&:after {
+		// content: '';
+		display: block;
+		width: 2px;
+		height: 20px;
+		margin-left: 20px;
+		background-color: #303030;
 	}
 }
 
-.top-tier {
-	@include setStreamerPrio(gold);
+.hopp__table {
+
+	&__row {
+		display: flex;
+		align-items: center;
+		border: 2px solid #202020;
+		border-bottom: 0;
+		overflow: hidden;
+		color: white;
+		transition: all .2s;
+
+		&:hover {
+			background-color: #202020;
+		}
+
+		&:first-of-type {
+			border-radius: 6px 6px 0 0;
+		}
+
+		&:last-of-type {
+			border-radius: 0 0 6px 6px ;
+			border-bottom: 2px solid #202020;
+		}
+	}
+
+	&__col {
+		margin-right: 20px;
+	}
+
+	&__avatar {
+		margin-top: 10px;
+		margin-left: 10px;
+		margin-bottom: 10px;
+		height: 40px;
+		border-radius: 50%;
+	}
+
+	&__name {
+		width: 100px;
+		overflow: hidden;
+
+		@extend %stroke--right;
+	}
+	
+	&__title {
+		// width: 100%;
+		flex-grow: 1;
+	}
+
+	&__game {
+		text-align: right;
+	}
+
+	&__viewers {
+		min-width: 40px;
+		text-align: right;
+	}
 }
 
-.beta-tier {
-	@include setStreamerPrio( orange);
+.hopp__toggeler {
+	display: flex;
+
+	&__button {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		padding: 0 10px;
+		border: 2px solid #202020;
+		transition: all .2s;
+
+		&:first-of-type {
+			border-radius: 6px 0 0 6px;
+		}
+
+		&:last-of-type {
+			border-radius: 0 6px 6px 0;
+			border-left: transparent;
+		}
+
+		&:hover {
+			background-color: #191919;
+		}
+
+		&--active {
+			background-color: #202020;
+		}
+
+		svg {
+			height: 25px;
+		}
+	}
 }
 
-.overwatch {
-	@include setStreamerPrio(darkorange);
-}
-
-.wink {
-	@include setStreamerPrio(pink);
+.hide {
+	display: none;
 }

@@ -1,4 +1,3 @@
-
 // @include "../../jquery.js"
 
 const streamerLists = [
@@ -36,71 +35,141 @@ const streamerLists = [
         ]
     }
 ]
+
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
 class ShowFavStreamers {
 
-    constructor(streamerLists) {
+    constructor (streamerLists) {
         this.streamerLists = streamerLists;
-        this.allOnlineStreamerNames = this.getAllOnlineStreamerNames();
+        this.streamerData;
 
         this.init();
     }
 
-    init() {
-        this.setStreamerOrder();
+    init () {
+        this.getStreamerData();
+        this.renderVieuwToggler();
+        this.renderTable();
 
-        console.log(`Your fav streamers are:`, this.streamerLists);
+        this.showTable();
+
+        this.initListeners();
     }
 
-    getAllOnlineStreamerNames() {
-        let allStreamerNames = [];
+    getStreamerData () {
+        let streamerData = [];
 
         $('.live-channel-card').parent().each(function (i) {
             const streamEl = $(this);
-            const streamerName = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText; // string
+            const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText;
+            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText;
+            const title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText;
+            const thumbnail = streamEl.find($('.tw-image'))[1].src;
+            const avatar = streamEl.find($('.tw-image'))[0].src;
+            const viewers = streamEl.find($('.ScMediaCardStatWrapper-sc-1ncw7wk-0.bfxdoE.tw-media-card-stat p'))[0].innerHTML.replace(/viewers/g,'');
+            const url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href;
 
-            allStreamerNames.push(streamerName)
+            streamerData.push(
+                {
+                    name: name,
+                    game: game,
+                    title: title,
+                    thumbnail: thumbnail,
+                    avatar: avatar,
+                    viewers: viewers,
+                    url: url
+                }
+            )
         });
 
-        return allStreamerNames;
+        this.streamerData = streamerData;
     }
-    
-    setStreamerOrder() {   
+
+    renderVieuwToggler () {
+        const tabBar = $('.InjectLayout-sc-588ddc-0.kNuFSG');
+
+        const toggeler = document.createElement('div');
+        toggeler.classList.add('hopp__toggeler');
+
+        toggeler.innerHTML += `
+            <div class="hopp__toggeler__button" data-hopp-toggeler="default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
+            <div class="hopp__toggeler__button" data-hopp-toggeler="table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg></div>
+        `;
+
+        insertAfter(toggeler, tabBar[0]);
+    }
+
+    renderTable () {
+        const originalDisplay = $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)');
+        originalDisplay.addClass('hopp__default');
+
+        const table = document.createElement('div');
+        table.classList.add('hopp__table');
+
+        this.streamerData.forEach(streamer => {
+            table.innerHTML += `
+                <a href="${streamer.url}" class="hopp__table__row">
+                    <img class="hopp__table__col hopp__table__avatar" src="${streamer.avatar}"/>
+                    <div class="hopp__table__col hopp__table__name">${streamer.name}</div>
+                    <div class="hopp__table__col hopp__table__title">${streamer.title}</div>
+                    <div class="hopp__table__col hopp__table__game">${streamer.game}</div>
+                    <div class="hopp__table__col hopp__table__viewers">${streamer.viewers}</div>
+                </a>
+            `;
+        });
+
+        insertAfter(table, originalDisplay[0]);
+    }
+
+    handleviewToggelerActiveState (displayType) {
+        $('.hopp__toggeler__button').removeClass('hopp__toggeler__button--active');
+        $(`.hopp__toggeler__button[data-hopp-toggeler="${displayType}"]`).addClass('hopp__toggeler__button--active');  
+    }
+
+    showTable () {
+        this.handleviewToggelerActiveState('table');
+            
+        // show table
+        $('.hopp__default').addClass('hide');
+        $('.hopp__table').removeClass('hide');
+    }
+
+    showDefault (displayType) {
+        this.handleviewToggelerActiveState('default');
+            
+        // show default
+        $('.hopp__default').removeClass('hide');
+        $('.hopp__table').addClass('hide');
+    }
+
+    initListeners () {
         const that = this;
 
-        $('.live-channel-card').parent().each(function (i) {
-            const streamEl = $(this);
-            const onlineStreamerName = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
+        $('.hopp__toggeler__button').on('click', function() {
+            const displayType = $(this).data('hoppToggeler');          
 
-            that.streamerLists.forEach((singleStreamerList, i) => {
-                const cssClass = singleStreamerList.cssClass;
-                const favStreamers = singleStreamerList.streamers;
-                const order = -100 + i;
-                
-                favStreamers.forEach(favStreamerName => {
-                    if (favStreamerName == onlineStreamerName) {
-                        streamEl.addClass(cssClass);
-                        streamEl.css({order: order});
-                    }
-                });
-            });
+            if (displayType === 'table') {
+                that.showTable();
+            }
+            if (displayType === 'default') {
+                that.showDefault();
+            }
         });
     }
 }
 
-
-const favStreamers = new ShowFavStreamers(streamerLists);
+ 
 
 if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
     var checkExist = setInterval(function () {
         if ($('.live-channel-card').length) {
 
-            favStreamers.init();
+            const favStreamers = new ShowFavStreamers(streamerLists); 
 
             clearInterval(checkExist);
         }
     }, 100);
 }
 
-$(document).on("click", function () {
-    favStreamers.init();
-});
