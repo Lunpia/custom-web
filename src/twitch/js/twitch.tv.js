@@ -108,6 +108,8 @@ class ShowFavStreamers {
         const table = document.createElement('div');
         table.classList.add('hopp__table');
 
+        table.innerHTML += `<div class="Layout-sc-nxg1ff-0 kamdZy"><h4 data-a-target="live-channels-header" class="CoreText-sc-cpl358-0 gyzpTM">Live channels</h4></div>`
+
         this.streamerData.forEach(streamer => {
             table.innerHTML += `
                 <a href="${streamer.url}" class="hopp__table__row">
