@@ -1,107 +1,31 @@
-%stroke--right {
-	&:after {
-		// content: '';
-		display: block;
-		width: 2px;
-		height: 20px;
-		margin-left: 20px;
-		background-color: #303030;
+// default streamer behviour
+.tw-tower .cxWlKh {
+	opacity: 0.7;
+	transition: opacity .2s;
+
+	&:hover {
+		opacity: 1;
 	}
 }
 
-.hopp__table {
+@mixin fav-streamer($color) {
+	opacity: 1 !important;
 
-	&__row {
-		display: flex;
-		align-items: center;
-		border: 2px solid #202020;
-		border-bottom: 0;
-		overflow: hidden;
-		color: white;
-		transition: all .2s;
-
-		&:hover {
-			background-color: #202020;
-		}
-
-		&:first-of-type {
-			border-radius: 6px 6px 0 0;
-		}
-
-		&:last-of-type {
-			border-radius: 0 0 6px 6px ;
-			border-bottom: 2px solid #202020;
-		}
+	// live text
+	.hwlNix {
+		background-color: $color;
 	}
 
-	&__col {
-		margin-right: 20px;
+	// avatar
+	.tw-image-avatar {
+		border: 3px solid $color;
 	}
 
-	&__avatar {
-		margin-top: 10px;
-		margin-left: 10px;
-		margin-bottom: 10px;
-		height: 40px;
-		border-radius: 50%;
-	}
-
-	&__name {
-		width: 100px;
-		overflow: hidden;
-
-		@extend %stroke--right;
-	}
-
-	&__game {
-		width: 220px;
-	}
-	
-	&__title {
-		flex-grow: 1;
-	}
-
-	&__viewers {
-		min-width: 40px;
-		text-align: right;
+	*[data-test-selector='ChannelLink'] {
+		color: $color;
 	}
 }
 
-.hopp__layout-toggeler {
-	display: flex;
-
-	&__button {
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		padding: 0 10px;
-		border: 2px solid #202020;
-		border-right: none;
-		transition: all .2s;
-
-		&:first-of-type {
-			border-radius: 6px 0 0 6px;
-		}
-
-		&:last-of-type {
-			border-radius: 0 6px 6px 0;
-			border-right: 2px solid #202020;
-		}
-
-		&:hover {
-			background-color: #191919;
-		}
-
-		&.active {
-			background-color: #202020;
-		}
-
-		svg {
-			height: 18px;
-		}
-	}
-}
-
-.hide {
-	display: none;
-}
+.top-tier { @include fav-streamer(gold) };
+.beta-tier { @include fav-streamer(orange) };
+.overwatch { @include fav-streamer(darkorange) };
