@@ -44,6 +44,7 @@ class ShowFavStreamers {
     constructor (streamerLists) {
         this.streamerLists = streamerLists;
         this.streamerData;
+        this.defaultLayout = 'table';
 
         this.init();
     }
@@ -53,7 +54,7 @@ class ShowFavStreamers {
         this.renderVieuwToggler();
         this.renderTable();
 
-        this.showTable();
+        this.showLayout(this.defaultLayout);
 
         this.initListeners();
     }
@@ -91,22 +92,22 @@ class ShowFavStreamers {
         const tabBar = $('.InjectLayout-sc-588ddc-0.kNuFSG');
 
         const toggeler = document.createElement('div');
-        toggeler.classList.add('hopp__toggeler');
+        toggeler.classList.add('hopp__layout-toggeler');
 
         toggeler.innerHTML += `
-            <div class="hopp__toggeler__button" data-hopp-toggeler="default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="hopp__toggeler__button" data-hopp-toggeler="table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg></div>
+            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
+            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg></div>
         `;
 
         insertAfter(toggeler, tabBar[0]);
     }
 
     renderTable () {
-        const originalDisplay = $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)');
-        originalDisplay.addClass('hopp__default');
+        const originalLayout = $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)');
+        originalLayout.addClass('hopp__layout hopp__layout__grid');
 
         const table = document.createElement('div');
-        table.classList.add('hopp__table');
+        $(table).addClass('hopp__layout hopp__layout__table');
 
         table.innerHTML += `<div class="Layout-sc-nxg1ff-0 kamdZy"><h4 data-a-target="live-channels-header" class="CoreText-sc-cpl358-0 gyzpTM">Live channels</h4></div>`
 
@@ -115,48 +116,40 @@ class ShowFavStreamers {
                 <a href="${streamer.url}" class="hopp__table__row">
                     <img class="hopp__table__col hopp__table__avatar" src="${streamer.avatar}"/>
                     <div class="hopp__table__col hopp__table__name">${streamer.name}</div>
+                    <div class="hopp__table__col hopp__table__game" title="${streamer.game}">${streamer.game}</div>
                     <div class="hopp__table__col hopp__table__title">${streamer.title}</div>
-                    <div class="hopp__table__col hopp__table__game">${streamer.game}</div>
                     <div class="hopp__table__col hopp__table__viewers">${streamer.viewers}</div>
                 </a>
             `;
         });
 
-        insertAfter(table, originalDisplay[0]);
+        insertAfter(table, originalLayout[0]);
     }
 
-    handleviewToggelerActiveState (displayType) {
-        $('.hopp__toggeler__button').removeClass('hopp__toggeler__button--active');
-        $(`.hopp__toggeler__button[data-hopp-toggeler="${displayType}"]`).addClass('hopp__toggeler__button--active');  
+    handleLayoutToggelerActiveStatus (layoutType) {
+        $('.hopp__layout-toggeler__button').removeClass('active');
+        $(`div[data-hopp-layout-toggeler="${layoutType}"]`).addClass('active');  
     }
 
-    showTable () {
-        this.handleviewToggelerActiveState('table');
+    showLayout (layoutType) {
+        this.handleLayoutToggelerActiveStatus(layoutType);
             
         // show table
-        $('.hopp__default').addClass('hide');
-        $('.hopp__table').removeClass('hide');
-    }
-
-    showDefault (displayType) {
-        this.handleviewToggelerActiveState('default');
-            
-        // show default
-        $('.hopp__default').removeClass('hide');
-        $('.hopp__table').addClass('hide');
+        $('.hopp__layout').addClass('hide');
+        $(`.hopp__layout__${layoutType}`).removeClass('hide');
     }
 
     initListeners () {
         const that = this;
 
-        $('.hopp__toggeler__button').on('click', function() {
-            const displayType = $(this).data('hoppToggeler');          
+        $('div[data-hopp-layout-toggeler]').on('click', function() {
+            const layoutType = $(this).data('hoppLayoutToggeler');          
 
-            if (displayType === 'table') {
-                that.showTable();
+            if (layoutType === 'table') {
+                that.showLayout('table');
             }
-            if (displayType === 'default') {
-                that.showDefault();
+            else {
+                that.showLayout('grid');
             }
         });
     }
