@@ -1,4 +1,5 @@
 // @include "../../jquery.js"
+// @include "../../popper.js"
 
 const favStreamersLists = [
     {
@@ -72,7 +73,8 @@ const getStreamerGames = () => {
 
     return games;
 }
-class LayoutHandler {
+
+class Layout {
 
     constructor (streamerData, defaultLayout = 'grid') {
         this.streamerData = streamerData;
@@ -82,7 +84,6 @@ class LayoutHandler {
     }
 
     init () {
-        this.renderLayoutToggler();
         this.renderTable();
 
         this.showLayout(this.defaultLayout);
@@ -90,28 +91,14 @@ class LayoutHandler {
         this.initListeners();
     }
 
-    renderLayoutToggler () {
-        const tabBar = $('.InjectLayout-sc-588ddc-0.kNuFSG');
-
-        const toggeler = document.createElement('div');
-        toggeler.classList.add('hopp__layout-toggeler');
-
-        toggeler.innerHTML += `
-            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="grid" title="Grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="table" title="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></div>
-            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="filter" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        `;
-
-        insertAfter(toggeler, tabBar[0]);
-    }
-
     renderTable () {
         const originalLayout = $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)');
-        originalLayout.addClass('hopp__layout hopp__layout-grid');
+        originalLayout.addClass('hopp__layout hopp__layout-grid').attr('data-hopp-layout', 'grid');
 
         const table = document.createElement('div');
-        $(table).addClass('hopp__layout hopp__layout-table');
+        $(table).addClass('hopp__layout hopp__layout-table').attr('data-hopp-layout', 'table');
 
+        // header title
         table.innerHTML += `<div class="Layout-sc-nxg1ff-0 kamdZy"><h4 data-a-target="live-channels-header" class="CoreText-sc-cpl358-0 gyzpTM">Live channels</h4></div>`
 
         this.streamerData.forEach(streamer => {
@@ -131,12 +118,12 @@ class LayoutHandler {
 
     showLayout (layoutType) {
         // handle layout-toggler active status
-        $('.hopp__layout-toggeler__button').removeClass('active');
+        $('div[data-hopp-layout-toggeler]').removeClass('active');
         $(`div[data-hopp-layout-toggeler="${layoutType}"]`).addClass('active');  
             
         // show layout
-        $('.hopp__layout').addClass('hide');
-        $(`.hopp__layout-${layoutType}`).removeClass('hide');
+        $('div[data-hopp-layout]').addClass('hide');
+        $(`div[data-hopp-layout="${layoutType}"]`).removeClass('hide');
     }
 
     initListeners () {
@@ -195,41 +182,17 @@ class Filter {
     }
 
     init () {
-        this.renderFilters();
         this.initListeners();
-    }
-
-    renderFilters () {
-        const tabBar = $('.InjectLayout-sc-588ddc-0.kNuFSG');
-
-        const toggeler = document.createElement('div');
-        toggeler.classList.add('hopp__filters');
-        
-        // all
-        toggeler.innerHTML += `
-            <div class="hopp__filters__filter" data-hopp-filter="all">All</div>
-        `;
-
-        // games
-        this.arrayWithFilters.forEach(filterName => {
-            const dataValue = filterName.toLocaleLowerCase();
-
-            toggeler.innerHTML += `
-                <div class="hopp__filters__filter" data-hopp-filter="${dataValue}">${filterName}</div>
-            `;            
-        });
-        
-        insertAfter(toggeler, tabBar[0]);
     }
 
     showStreamerBasedOnGame (filter) {
         if (filter === 'all') {
-            $('.live-channel-card').parent().show();
+            $('.hopp__streamer').show();
              
             return
         }
 
-        $('.live-channel-card').parent().each(function (i) {
+        $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
             const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
 
@@ -240,26 +203,118 @@ class Filter {
             }
         });
     }
-
     initListeners () {
         const that = this;
 
-        $('div[data-hopp-filter]').on('click', function() {
-            const filterName = $(this).data('hoppFilter'); 
+        $('#tooltipxxx input').on('click', function() {
+            const filterName = $(this)[0].value;
+            console.log(filterName); 
 
             that.showStreamerBasedOnGame(filterName);
         });
-
     }
 }
+
+const doAllotOfPeWork = () => {
+
+    // top bar
+    const placeTopBarHere = $('.Layout-sc-nxg1ff-0.ScTabsLayout-sc-i1y2af-0.cmPJuA.tw-tabs')[0];
+    placeTopBarHere.innerHTML += `
+        <div class="hopp__top-bar"> 
+            <div class="hopp__top-bar__icon-list hopp__icon-list"> 
+                <div class="hopp__icon-list__item" data-hopp-layout-toggeler="grid" title="Grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
+                <div class="hopp__icon-list__item" data-hopp-layout-toggeler="table" title="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></div>
+            </div>
+                
+            <div class="hopp__top-bar__icon-list hopp__icon-list"> 
+                <div class="hopp__icon-list__item" id="hopp" aria-describedby="tooltipxxx" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="hopp__icon-list__item" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+            </div>
+        </div>
+
+        <div id="tooltipxxx" role="tooltip">
+            <form>
+                <input type="radio" id="all" name="game" value="all">
+                <label for="all">All</label><br>
+                <h3>Fav Games</h3>
+                ${favGames.join(0).split(0).map((game, i) => `
+                    <input type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                    <label for="${game.toLocaleLowerCase()}">${game}</label><br>
+                `).join('')}
+
+                <h3>All Games</h3>
+                ${getStreamerGames().join(0).split(0).map((game, i) => `
+                    <input type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                    <label for="${game.toLocaleLowerCase()}">${game}</label><br>
+                `).join('')}
+            </form>
+        </div>
+    `;
+
+    // rename streamer element
+    $('.live-channel-card').parent().addClass('hopp__streamer');
+
+    // add filter popover
+}
+
+
+
+
 
 if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
     var checkExist = setInterval(function () {
         if ($('.live-channel-card').length) {
+            doAllotOfPeWork();
 
-            const lh = new LayoutHandler(getStreamerData()); 
+            const lh = new Layout(getStreamerData()); 
             const fs = new FavStreamers(favStreamersLists); 
             const f = new Filter(favGames); 
+
+
+            
+
+            const button = document.querySelector('#hopp');
+            const tooltip = document.querySelector('#tooltipxxx');
+            let isOpen = false;
+
+            
+         
+            const popperInstance = Popper.createPopper(button, tooltip, {
+                placement: 'bottom-end',
+                modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        offset: [-5, -35],
+                      },
+                    },
+                  ],
+            });
+
+            const showTooltip = () => {
+                console.log('open');
+                isOpen = true;
+                tooltip.setAttribute('data-show', '');
+                popperInstance.update();
+            }
+            
+            const hideTooltip = () => {
+                console.log('close');
+                isOpen = false;
+                tooltip.removeAttribute('data-show');
+            }
+
+            $('.CoreText-sc-cpl358-0.ScTitleText-sc-1gsen4-0.fjVUJF.bMnEsX.tw-title').on('click', function() {
+                hideTooltip();
+            });
+
+            $('#hopp').on('click', function() {
+                showTooltip();
+            });
+
+
+
+
             
             clearInterval(checkExist);
         }

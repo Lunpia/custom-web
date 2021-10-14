@@ -1,14 +1,13 @@
-.hopp__layout-toggeler {
+.hopp__icon-list {
 	display: flex;
 
-	&__button {
+	&__item {
+		position: relative;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		padding: 0 10px;
 		border: 2px solid #202020;
-		border-right: none;
-		transition: all .2s;
 
 		&:first-of-type {
 			border-radius: 6px 0 0 6px;
@@ -16,7 +15,10 @@
 
 		&:last-of-type {
 			border-radius: 0 6px 6px 0;
-			border-right: 2px solid #202020;
+		}
+
+		&:not(&:first-of-type) {
+			margin-left: -2px;
 		}
 
 		&:hover {
@@ -24,7 +26,8 @@
 		}
 
 		&.active {
-			background-color: $purple;
+			z-index: 1;
+			border-color: $purple;
 		}
 
 		svg {
