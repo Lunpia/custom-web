@@ -14,20 +14,17 @@ const favStreamersLists = [
         cssClass: 'beta-tier',
         streamers: [
             'iitztimmy',
+            'faide',
             'xqcow',
-            'eskay'
-        ],
-    },
-    {
-        title: 'Overwatch streamers',
-        cssClass: 'overwatch',
-        streamers: [
+            'eskay',
             'mL7support',
             'emongg',
-            'redshell'
-        ]
-    }
+            'redshell',
+        ],
+    },
 ]
+
+const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -62,6 +59,19 @@ const getStreamerData = () => {
     return streamerData;
 }
 
+const getStreamerGames = () => {
+    const games = [];
+
+    getStreamerData().forEach((streamer) => {
+        const game = streamer.game;
+
+        if (!games.includes(game)) {
+            games.push(game)
+        }
+    });
+
+    return games;
+}
 class LayoutHandler {
 
     constructor (streamerData, defaultLayout = 'grid') {
@@ -88,7 +98,8 @@ class LayoutHandler {
 
         toggeler.innerHTML += `
             <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="grid" title="Grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="table" title="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg></div>
+            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="table" title="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></div>
+            <div class="hopp__layout-toggeler__button" data-hopp-layout-toggeler="filter" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         `;
 
         insertAfter(toggeler, tabBar[0]);
@@ -134,12 +145,7 @@ class LayoutHandler {
         $('div[data-hopp-layout-toggeler]').on('click', function() {
             const layoutType = $(this).data('hoppLayoutToggeler'); 
 
-            if (layoutType === 'table') {
-                that.showLayout('table');
-            }
-            else {
-                that.showLayout('grid');
-            }
+            that.showLayout(layoutType);
         });
     }
 }
@@ -181,6 +187,71 @@ class FavStreamers {
     }
 }
  
+class Filter {
+    constructor (arrayWithFilters) {
+        this.arrayWithFilters = arrayWithFilters;
+
+        this.init();
+    }
+
+    init () {
+        this.renderFilters();
+        this.initListeners();
+    }
+
+    renderFilters () {
+        const tabBar = $('.InjectLayout-sc-588ddc-0.kNuFSG');
+
+        const toggeler = document.createElement('div');
+        toggeler.classList.add('hopp__filters');
+        
+        // all
+        toggeler.innerHTML += `
+            <div class="hopp__filters__filter" data-hopp-filter="all">All</div>
+        `;
+
+        // games
+        this.arrayWithFilters.forEach(filterName => {
+            const dataValue = filterName.toLocaleLowerCase();
+
+            toggeler.innerHTML += `
+                <div class="hopp__filters__filter" data-hopp-filter="${dataValue}">${filterName}</div>
+            `;            
+        });
+        
+        insertAfter(toggeler, tabBar[0]);
+    }
+
+    showStreamerBasedOnGame (filter) {
+        if (filter === 'all') {
+            $('.live-channel-card').parent().show();
+             
+            return
+        }
+
+        $('.live-channel-card').parent().each(function (i) {
+            const streamEl = $(this);
+            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
+
+            streamEl.hide();
+
+            if (filter === game) {
+                streamEl.show();
+            }
+        });
+    }
+
+    initListeners () {
+        const that = this;
+
+        $('div[data-hopp-filter]').on('click', function() {
+            const filterName = $(this).data('hoppFilter'); 
+
+            that.showStreamerBasedOnGame(filterName);
+        });
+
+    }
+}
 
 if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
     var checkExist = setInterval(function () {
@@ -188,7 +259,8 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
 
             const lh = new LayoutHandler(getStreamerData()); 
             const fs = new FavStreamers(favStreamersLists); 
-
+            const f = new Filter(favGames); 
+            
             clearInterval(checkExist);
         }
     }, 100);

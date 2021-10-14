@@ -22,7 +22,7 @@
 	}
 
 	*[data-test-selector='ChannelLink'] {
-		color: $color;
+		color: $color !important;
 	}
 }
 
