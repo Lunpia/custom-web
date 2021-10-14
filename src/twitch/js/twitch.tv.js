@@ -25,7 +25,7 @@ const favStreamersLists = [
     },
 ]
 
-const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia']
+const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -70,8 +70,22 @@ const getStreamerGames = () => {
             games.push(game)
         }
     });
+    
+    return games.sort();
+}
 
-    return games;
+const getAvailibleFavGames = () => {
+    let filteredGames = [];
+    
+    getStreamerGames().forEach(streamerGame => {
+        favGames.forEach(favGame => {
+            if (streamerGame === favGame){
+                filteredGames.push(streamerGame);
+            }
+        });
+    });
+
+    return filteredGames;
 }
 
 class Layout {
@@ -145,15 +159,13 @@ class FavStreamers {
     }
 
     init () {
-        console.log('fav streamers inited: ', this.favStreamersLists);
-
         this.setStreamerOrder();
     }
 
     setStreamerOrder() {   
         const that = this;
 
-        $('.live-channel-card').parent().each(function (i) {
+        $('.live-channel-card').parent().each(function () {
             const streamEl = $(this);
             const onlineStreamerName = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
 
@@ -203,12 +215,12 @@ class Filter {
             }
         });
     }
+
     initListeners () {
         const that = this;
 
-        $('#tooltipxxx input').on('click', function() {
+        $('#filter-game-popover input').on('click', function() {
             const filterName = $(this)[0].value;
-            console.log(filterName); 
 
             that.showStreamerBasedOnGame(filterName);
         });
@@ -227,26 +239,34 @@ const doAllotOfPeWork = () => {
             </div>
                 
             <div class="hopp__top-bar__icon-list hopp__icon-list"> 
-                <div class="hopp__icon-list__item" id="hopp" aria-describedby="tooltipxxx" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="hopp__icon-list__item" id="filter-game" aria-describedby="filter-game-popover" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="hopp__icon-list__item" title="Favourites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
                 <div class="hopp__icon-list__item" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
             </div>
         </div>
 
-        <div id="tooltipxxx" role="tooltip">
-            <form>
-                <input type="radio" id="all" name="game" value="all">
-                <label for="all">All</label><br>
-                <h3>Fav Games</h3>
-                ${favGames.join(0).split(0).map((game, i) => `
-                    <input type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
-                    <label for="${game.toLocaleLowerCase()}">${game}</label><br>
-                `).join('')}
+        <div id="filter-game-popover" class="popover" role="tooltip">
+            <form clas="hopp__form">
+                <div class="hopp__form__group">
+                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all" checked>
+                    <label class="hopp__form__label" for="all">All</label>
+                </div>
+                
+                <div class="hopp__form__group">
+                    <h3 class="hopp__form__title">Favourite Games</h3>
+                    ${getAvailibleFavGames().join(0).split(0).map((game, i) => `
+                        <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                        <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
+                    `).join('')}
+                </div>
 
-                <h3>All Games</h3>
-                ${getStreamerGames().join(0).split(0).map((game, i) => `
-                    <input type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
-                    <label for="${game.toLocaleLowerCase()}">${game}</label><br>
-                `).join('')}
+                <div class="hopp__form__group">
+                    <h3 class="hopp__form__title">All Games</h3>
+                    ${getStreamerGames().join(0).split(0).map((game, i) => `
+                        <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                        <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
+                    `).join('')}
+                </div>
             </form>
         </div>
     `;
@@ -257,6 +277,44 @@ const doAllotOfPeWork = () => {
     // add filter popover
 }
 
+class Popover {
+    constructor (triggerEl, popoverEl, activeClass = 'active') {
+        this.triggerEl = triggerEl;
+        this.popoverEl = popoverEl;
+        this.popperInstance = Popper.createPopper(this.triggerEl, this.popoverEl, {
+            placement: 'bottom-end',
+        });
+        this.activeClass = activeClass;
+
+        this.init();
+    }
+
+    init () {
+        this.initListeners();
+    }
+    
+    show () {
+        this.triggerEl.classList.add(this.activeClass);
+        this.popoverEl.setAttribute('data-show', '');
+        this.popperInstance.update();
+    }
+    
+    hide () {
+        this.triggerEl.classList.remove(this.activeClass);
+        this.popoverEl.removeAttribute('data-show');
+    }
+
+    initListeners () {
+        this.triggerEl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.show();
+        });
+
+        $('body').on('click', () => {
+            this.hide();
+        });
+    }
+}
 
 
 
@@ -270,52 +328,10 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
             const fs = new FavStreamers(favStreamersLists); 
             const f = new Filter(favGames); 
 
+            const filterTrigger = document.querySelector('#filter-game');
+            const filterPopover = document.querySelector('#filter-game-popover');
+            const filter = new Popover(filterTrigger, filterPopover);
 
-            
-
-            const button = document.querySelector('#hopp');
-            const tooltip = document.querySelector('#tooltipxxx');
-            let isOpen = false;
-
-            
-         
-            const popperInstance = Popper.createPopper(button, tooltip, {
-                placement: 'bottom-end',
-                modifiers: [
-                    {
-                      name: 'offset',
-                      options: {
-                        offset: [-5, -35],
-                      },
-                    },
-                  ],
-            });
-
-            const showTooltip = () => {
-                console.log('open');
-                isOpen = true;
-                tooltip.setAttribute('data-show', '');
-                popperInstance.update();
-            }
-            
-            const hideTooltip = () => {
-                console.log('close');
-                isOpen = false;
-                tooltip.removeAttribute('data-show');
-            }
-
-            $('.CoreText-sc-cpl358-0.ScTitleText-sc-1gsen4-0.fjVUJF.bMnEsX.tw-title').on('click', function() {
-                hideTooltip();
-            });
-
-            $('#hopp').on('click', function() {
-                showTooltip();
-            });
-
-
-
-
-            
             clearInterval(checkExist);
         }
     }, 100);

@@ -1,0 +1,32 @@
+.popover {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 6px;
+    border: 2px solid #202020;
+    background-color: $body-bg;
+    max-height: 600px;
+    overflow-y: auto;
+
+    display: none;
+    z-index: 213890;
+
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    // &::-webkit-scrollbar-track {}
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #303030;
+        border-radius: 10px;
+    }
+
+    &[data-show] {
+        display: block;
+    }
+}

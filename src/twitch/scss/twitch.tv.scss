@@ -5,23 +5,8 @@
 @import 'fav-streamers';
 @import 'layout-table';
 @import 'icon-list';
+@import 'popover';
 @import 'form';
 @import 'dim-nav';
 @import 'wide-chat';
 
-
-#tooltipxxx {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 15px 20px;
-  border: 2px solid #202020;
-  background-color: #000;
-
-  display: none;
-  z-index: 213890;
-  }
-  #tooltipxxx[data-show] {
-    display: block;
-  }
