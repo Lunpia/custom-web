@@ -53,7 +53,7 @@ const doAllotOfPreWork = () => {
         <div id="filter-game-popover" class="popover" role="tooltip">
             <form clas="hopp__form">
                 <div class="hopp__form__group">
-                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
+                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="All">
                     <label class="hopp__form__label" for="all">All</label>
                 </div>
                 
@@ -246,14 +246,14 @@ class StreamFilter {
         
         this.getAvailablebFavGames().forEach(game => { 
             favGamesHtml += `
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
              `;
         });
         
         this.getAllGamesWithoutFav().forEach(game => { 
             otherGamesHtml += `
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
+                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
              `;
         });
