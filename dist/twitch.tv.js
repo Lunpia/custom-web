@@ -32,7 +32,7 @@ const insertAfter = (newNode, referenceNode) => {
 }
 
 
-const doAllotOfPeWork = () => {
+const doAllotOfPreWork = () => {
 
     // top bar
     const placeTopBarHere = $('.Layout-sc-nxg1ff-0.ScTabsLayout-sc-i1y2af-0.cmPJuA.tw-tabs')[0];
@@ -74,7 +74,7 @@ const doAllotOfPeWork = () => {
     // add filter popover
 }
 class StreamFilter {
-    constructor (listsOfFavStreamers, activeGameFilter = 'all', favGames) {
+    constructor (listsOfFavStreamers, activeGameFilter = 'All', favGames) {
         this.originalStreamerData = [];
         this.listsOfFavStreamers = listsOfFavStreamers;
         this.activeGameFilter = activeGameFilter;
@@ -200,7 +200,7 @@ class StreamFilter {
         // set checked
         $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', 'No playing a game');
 
-        if (filterGame === 'all') {
+        if (filterGame === 'All') {
             $('.hopp__streamer').show();
              
             return
@@ -208,7 +208,7 @@ class StreamFilter {
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase() : 'other';
+            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
 
             streamEl.hide();
 
@@ -335,25 +335,25 @@ class Popover {
 if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
     var checkExist = setInterval(function () {
         if ($('.live-channel-card').length) {
-            doAllotOfPeWork();
+            doAllotOfPreWork();
 
-            const sf = new StreamFilter(favStreamersLists,'all', favGames);
+            const sf = new StreamFilter(favStreamersLists, 'All', favGames);
 
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'a') {
-                    sf.showStreamerBasedOnGame('all');
+                if (e.key === 'Escape') {
+                    sf.showStreamerBasedOnGame('All');
                 }
                 if (e.key === 'm') {
-                    sf.showStreamerBasedOnGame('minecraft');
+                    sf.showStreamerBasedOnGame('Minecraft');
                 }
                 if (e.key === 'o') {
-                    sf.showStreamerBasedOnGame('overwatch');
+                    sf.showStreamerBasedOnGame('Overwatch');
                 } 
                 if (e.key === 'c') {
-                    sf.showStreamerBasedOnGame('call of duty: black ops');
+                    sf.showStreamerBasedOnGame('Call of Duty: Black Ops');
                 }
-                if (e.key === 'p') {
-                    sf.showStreamerBasedOnGame('apex legends');
+                if (e.key === 'a') {
+                    sf.showStreamerBasedOnGame('Apex Legends');
                 }
             });
 
