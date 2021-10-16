@@ -61,8 +61,8 @@ const doAllotOfPeWork = () => {
                     <h3 class="hopp__form__title">Favourite Games</h3>
                 </div>
 
-                <div class="hopp__form__group hopp__form__group--all">
-                    <h3 class="hopp__form__title">All Games</h3>
+                <div class="hopp__form__group hopp__form__group--other">
+                    <h3 class="hopp__form__title">Other Games</h3>
                 </div>
             </form>
         </div>
@@ -74,10 +74,11 @@ const doAllotOfPeWork = () => {
     // add filter popover
 }
 class StreamFilter {
-    constructor (listsOfFavStreamers, activeGameFilter = 'all') {
+    constructor (listsOfFavStreamers, activeGameFilter = 'all', favGames) {
         this.originalStreamerData = [];
         this.listsOfFavStreamers = listsOfFavStreamers;
         this.activeGameFilter = activeGameFilter;
+        this.favGames = favGames;
 
         this.init();
     }
@@ -217,7 +218,7 @@ class StreamFilter {
         });
     }
 
-    getStreamerGames () {
+    getAllGames () {
         const games = [];
     
         this.originalStreamerData.forEach((streamer) => {
@@ -231,40 +232,34 @@ class StreamFilter {
         return games.sort();
     }
 
-    getAvailibleFavGames () {
-        let filteredGames = [];
-        
-        this.getStreamerGames().forEach(streamerGame => {
-            favGames.forEach(favGame => {
-                if (streamerGame === favGame){
-                    filteredGames.push(streamerGame);
-                }
-            });
-        });
+    getAvailablebFavGames () {
+        return this.getAllGames().filter(game => this.favGames.includes(game))
+    }
     
-        return filteredGames;
+    getAllGamesWithoutFav () {
+        return this.getAllGames().filter(game => !this.favGames.includes(game));
     }
 
     fillGameFilter () {
-        let favHtml = '';
-        let allHtml = '';
+        let favGamesHtml = '';
+        let otherGamesHtml = '';
         
-        this.getAvailibleFavGames().forEach(game => { 
-            favHtml += `
+        this.getAvailablebFavGames().forEach(game => { 
+            favGamesHtml += `
                 <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
              `;
         });
         
-        this.getStreamerGames().forEach(game => { 
-            allHtml += `
+        this.getAllGamesWithoutFav().forEach(game => { 
+            otherGamesHtml += `
                 <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game.toLocaleLowerCase()}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
              `;
         });
 
-        $('.hopp__form__group--fav')[0].innerHTML += favHtml;
-        $('.hopp__form__group--all')[0].innerHTML += allHtml;
+        $('.hopp__form__group--fav')[0].innerHTML += favGamesHtml;
+        $('.hopp__form__group--other')[0].innerHTML += otherGamesHtml;
     }
 
     initPopover () {
@@ -342,7 +337,7 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
         if ($('.live-channel-card').length) {
             doAllotOfPeWork();
 
-            const sf = new StreamFilter(favStreamersLists);
+            const sf = new StreamFilter(favStreamersLists,'all', favGames);
 
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'a') {
@@ -358,7 +353,7 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
                     sf.showStreamerBasedOnGame('call of duty: black ops');
                 }
                 if (e.key === 'p') {
-                    sf.showStreamerBasedOnGame('Apex Legends');
+                    sf.showStreamerBasedOnGame('apex legends');
                 }
             });
 
