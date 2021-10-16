@@ -103,7 +103,7 @@ class StreamFilter {
         $('.live-channel-card').parent().each(function (i) {
             const streamEl = $(this);
             const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText || '';
-            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : '';
+            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
             const title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText || '';
             const thumbnail = streamEl.find($('.tw-image'))[1].src || '';
             const avatar = streamEl.find($('.tw-image'))[0].src || '';
@@ -124,6 +124,8 @@ class StreamFilter {
                 }
             )
         });
+
+        console.log(streamerData);
 
         return streamerData;
     }
@@ -195,7 +197,7 @@ class StreamFilter {
         console.log(this.activeGameFilter);
         
         // set checked
-        $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', '');
+        $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', 'No playing a game');
 
         if (filterGame === 'all') {
             $('.hopp__streamer').show();
@@ -205,7 +207,7 @@ class StreamFilter {
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
+            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase() : 'other';
 
             streamEl.hide();
 
@@ -351,6 +353,12 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
                 }
                 if (e.key === 'o') {
                     sf.showStreamerBasedOnGame('overwatch');
+                } 
+                if (e.key === 'c') {
+                    sf.showStreamerBasedOnGame('call of duty: black ops');
+                }
+                if (e.key === 'p') {
+                    sf.showStreamerBasedOnGame('Apex Legends');
                 }
             });
 
