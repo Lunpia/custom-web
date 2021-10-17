@@ -7,7 +7,14 @@ const favStreamersLists = [
         cssClass: 'top-tier',
         streamers: [
             'Lekkerspelen',
-            'etho'
+            'ethotv'
+        ],
+    },    
+    {
+        title: 'lol',
+        cssClass: 'lol',
+        streamers: [
+            'EsportsPrimeLOL',
         ],
     },
     {
@@ -19,13 +26,14 @@ const favStreamersLists = [
             'xqcow',
             'eskay',
             'mL7support',
+            'taxi2g',
             'emongg',
             'redshell',
         ],
     },
 ]
 
-const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR']
+const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR', 'Rocket League']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -79,6 +87,7 @@ class StreamFilter {
         this.listsOfFavStreamers = listsOfFavStreamers;
         this.activeGameFilter = activeGameFilter;
         this.favGames = favGames;
+        this.popover;
 
         this.init();
     }
@@ -195,7 +204,7 @@ class StreamFilter {
     showStreamerBasedOnGame (filterGame) {
         this.activeGameFilter = filterGame;
 
-        console.log(this.activeGameFilter);
+        this.showLayout('grid');
         
         // set checked
         $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', 'No playing a game');
@@ -266,7 +275,7 @@ class StreamFilter {
         const filterTrigger = document.querySelector('#filter-game');
         const filterPopover = document.querySelector('#filter-game-popover');
 
-        new Popover(filterTrigger, filterPopover, undefined, false);
+        this.popover = new Popover(filterTrigger, filterPopover, undefined, false);
     }
 
     initListeners () {
@@ -285,6 +294,16 @@ class StreamFilter {
 
             that.showStreamerBasedOnGame(filterName);
         });
+
+        // show popup
+        this.popover.triggerEl.addEventListener('click', () => {
+            this.popover.open();
+        });
+
+        // hide popup
+        $('body').on('click', () => {
+            this.popover.close();
+        });
     }
 }
 class Popover {
@@ -296,38 +315,32 @@ class Popover {
         });
         this.activeClass = activeClass;
         this.scrollToTop = scrollToTop;
-
-        this.init();
+        this.isOpen = false;
     }
 
-    init () {
-        this.initListeners();
+    toggle () {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
     }
     
-    show () {
+    open () {
+        this.isOpen = true;
         this.triggerEl.classList.add(this.activeClass);
         this.popoverEl.setAttribute('data-show', '');
         this.popperInstance.update();
-
+        
         if (this.scrollToTop) {
             this.popoverEl.scrollTop = 0;
         }
     }
     
-    hide () {
+    close () {
+        this.isOpen = false;
         this.triggerEl.classList.remove(this.activeClass);
         this.popoverEl.removeAttribute('data-show');
-    }
-
-    initListeners () {
-        this.triggerEl.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.show();
-        });
-
-        $('body').on('click', () => {
-            this.hide();
-        });
     }
 }
 
@@ -340,20 +353,11 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
             const sf = new StreamFilter(favStreamersLists, 'All', favGames);
 
             window.addEventListener('keydown', (e) => {
+                if (e.key === 'f') {
+                    sf.popover.toggle();
+                }
                 if (e.key === 'Escape') {
-                    sf.showStreamerBasedOnGame('All');
-                }
-                if (e.key === 'm') {
-                    sf.showStreamerBasedOnGame('Minecraft');
-                }
-                if (e.key === 'o') {
-                    sf.showStreamerBasedOnGame('Overwatch');
-                } 
-                if (e.key === 'c') {
-                    sf.showStreamerBasedOnGame('Call of Duty: Black Ops');
-                }
-                if (e.key === 'a') {
-                    sf.showStreamerBasedOnGame('Apex Legends');
+                    sf.popover.close();
                 }
             });
 
