@@ -93,7 +93,6 @@ class StreamFilter {
     }
 
     init () {
-        console.log('New Streamer filter');
 
         this.originalStreamerData = this.getOriginalStreamerData();
 
@@ -120,8 +119,6 @@ class StreamFilter {
             const viewers = streamEl.find($('.ScMediaCardStatWrapper-sc-1ncw7wk-0.bfxdoE.tw-media-card-stat p'))[0].innerHTML.replace(/viewers/g,'') || '';
             const url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href || '';
 
-            console.log(game);
-
             streamerData.push(
                 {
                     name: name,
@@ -134,8 +131,6 @@ class StreamFilter {
                 }
             )
         });
-
-        console.log(streamerData);
 
         return streamerData;
     }
@@ -296,8 +291,10 @@ class StreamFilter {
         });
 
         // show popup
-        this.popover.triggerEl.addEventListener('click', () => {
-            this.popover.open();
+        console.log(this.popover.triggerEl);
+        this.popover.triggerEl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.popover.toggle();
         });
 
         // hide popup
@@ -306,6 +303,7 @@ class StreamFilter {
         });
     }
 }
+
 class Popover {
     constructor (triggerEl, popoverEl, activeClass = 'active', scrollToTop = false) {
         this.triggerEl = triggerEl;
@@ -327,6 +325,7 @@ class Popover {
     }
     
     open () {
+        console.log('oipened');
         this.isOpen = true;
         this.triggerEl.classList.add(this.activeClass);
         this.popoverEl.setAttribute('data-show', '');
@@ -338,6 +337,7 @@ class Popover {
     }
     
     close () {
+        console.log('closed');
         this.isOpen = false;
         this.triggerEl.classList.remove(this.activeClass);
         this.popoverEl.removeAttribute('data-show');
@@ -351,6 +351,8 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
             doAllotOfPreWork();
 
             const sf = new StreamFilter(favStreamersLists, 'All', favGames);
+
+            console.log(sf);
 
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'f') {
