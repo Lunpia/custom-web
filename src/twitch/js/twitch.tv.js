@@ -325,7 +325,6 @@ class Popover {
     }
     
     open () {
-        console.log('oipened');
         this.isOpen = true;
         this.triggerEl.classList.add(this.activeClass);
         this.popoverEl.setAttribute('data-show', '');
@@ -337,7 +336,6 @@ class Popover {
     }
     
     close () {
-        console.log('closed');
         this.isOpen = false;
         this.triggerEl.classList.remove(this.activeClass);
         this.popoverEl.removeAttribute('data-show');
