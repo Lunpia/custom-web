@@ -78,22 +78,22 @@ const doAllotOfPreWork = () => {
 
     // rename streamer element
     $('.live-channel-card').parent().addClass('hopp__streamer');
-
-    // add filter popover
 }
 class StreamFilter {
     constructor (listsOfFavStreamers, activeGameFilter = 'All', favGames) {
-        this.originalStreamerData = [];
+        this.originalStreamerData = this.getOriginalStreamerData();
         this.listsOfFavStreamers = listsOfFavStreamers;
-        this.activeGameFilter = activeGameFilter;
         this.favGames = favGames;
         this.popover;
+        this.allGames = this.getAllGames();
+        this.availablebFavGames = this.getAvailablebFavGames();
+        this.allGamesWithoutFav = this.getAllGamesWithoutFav();
+        this.activeGameFilter = activeGameFilter;
 
         this.init();
     }
 
     init () {
-        this.getOriginalStreamerData();
         this.orderFavStreamers();
         this.renderTable();
         this.showLayout('grid');
@@ -130,7 +130,7 @@ class StreamFilter {
             )
         });
 
-        this.originalStreamerData = streamerData;
+        return streamerData;
     }
     
     orderFavStreamers () {   
@@ -235,25 +235,24 @@ class StreamFilter {
     }
 
     getAvailablebFavGames () {
-        return this.getAllGames().filter(game => this.favGames.includes(game))
+        return this.allGames.filter(game => this.favGames.includes(game))
     }
     
     getAllGamesWithoutFav () {
-        return this.getAllGames().filter(game => !this.favGames.includes(game));
+        return this.allGames.filter(game => !this.favGames.includes(game));
     }
 
     fillGameFilter () {
         let favGamesHtml = '';
         let otherGamesHtml = '';
-        
-        this.getAvailablebFavGames().forEach(game => { 
+
+        this.availablebFavGames.forEach(game => { 
             favGamesHtml += `
                 <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
              `;
         });
-        
-        this.getAllGamesWithoutFav().forEach(game => { 
+        this.allGamesWithoutFav.forEach(game => { 
             otherGamesHtml += `
                 <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
                 <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
