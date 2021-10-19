@@ -289,7 +289,6 @@ class StreamFilter {
         });
 
         // show popup
-        console.log(this.popover.triggerEl);
         this.popover.triggerEl.addEventListener('click', (e) => {
             e.stopPropagation();
             this.popover.toggle();
