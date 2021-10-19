@@ -93,9 +93,7 @@ class StreamFilter {
     }
 
     init () {
-
-        this.originalStreamerData = this.getOriginalStreamerData();
-
+        this.getOriginalStreamerData();
         this.orderFavStreamers();
         this.renderTable();
         this.showLayout('grid');
@@ -109,7 +107,7 @@ class StreamFilter {
     getOriginalStreamerData () {
         let streamerData = [];
 
-        $('.live-channel-card').parent().each(function (i) {
+        $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
             const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText || '';
             const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
@@ -132,13 +130,13 @@ class StreamFilter {
             )
         });
 
-        return streamerData;
+        this.originalStreamerData = streamerData;
     }
     
     orderFavStreamers () {   
         const that = this;
 
-        $('.live-channel-card').parent().each(function () {
+        $('.hopp__streamer').each(function () {
             const streamEl = $(this);
             const onlineStreamerName = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
 
