@@ -34,7 +34,7 @@ const favStreamersLists = [
     },
 ]
 
-const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR', 'Rocket League']
+const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR', 'Rocket League', 'Software and Game Development']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
