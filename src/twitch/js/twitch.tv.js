@@ -105,8 +105,6 @@ class StreamFilter {
         this.fillGameFilter();
         this.showStreamerBasedOnGame(this.activeGameFilter);
 
-        this.popover.open();
-
         this.initListeners();
     }
     
@@ -197,18 +195,18 @@ class StreamFilter {
         $(`div[data-hopp-layout="${layoutType}"]`).removeClass('hide');
     }
     
-    showStreamerBasedOnGame (filterGame, contains = false) {
+    showStreamerBasedOnGame (filterGame) {
         const that = this;
-        this.activeGameFilter = filterGame.toLowerCase();
 
-        console.log(this.activeGameFilter);
+        console.log(filterGame);
 
         this.showLayout('grid');
         
         // set checked
-        $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', '');
+        $(`#filter-game-popover .hopp__form__radio`).prop('checked', false);
+        $(`#filter-game-popover .hopp__form__radio[value="${filterGame}"`).prop('checked', true);
 
-        if (this.activeGameFilter === 'all') {
+        if (filterGame === 'all') {
             $('.hopp__streamer').show();
             return
         }
@@ -219,12 +217,9 @@ class StreamFilter {
 
             streamEl.hide();
 
-            if (contains && streamerGame.includes(filterGame)){
-                streamEl.show();
-                return
-            }
-
-            if (that.activeGameFilter === streamerGame) {
+            if (streamerGame.includes(filterGame)){
+                console.log(`found: ${streamerGame}`);
+                that.activeGameFilter = streamerGame;
                 streamEl.show();
             }
         });
@@ -277,7 +272,7 @@ class StreamFilter {
         const otherGames = document.createElement('div');
         $(otherGames).addClass('hopp__form__form_group');
 
-        otherGames.innerHTML += `
+        otherGames.innerHTML += `            
             <div class="hopp__form__input-group">
                 <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
                 <label class="hopp__form__label" for="all">All</label>
@@ -316,35 +311,37 @@ class StreamFilter {
 
         // filtering
         $('#filter-game-popover .hopp__form__input-group').on('click', function(e) {
-            e.stopPropagation();
+            e.preventDefault(); // to stop double firing
+            // e.stopImmediatePropagation(); // don't close on click
+            
             const filterName = $(this).find('.hopp__form__radio')[0].value;
             that.showStreamerBasedOnGame(filterName);
         });
         
         // searching
         $('.hopp__form__text').on('input click', function(e) {
-            e.stopPropagation();
-            const text = e.currentTarget.value;
-            that.showStreamerBasedOnGame(text, true);
+            e.stopImmediatePropagation();
+
+            const typedText = e.currentTarget.value;
+            that.showStreamerBasedOnGame(typedText);
         });
 
         // clear search
         $('[data-hopp-clear-search]').on('click', function(e) {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
 
             const clearThisID = $(this).attr('data-hopp-clear-search');
-
             $(`#${clearThisID}`)[0].value = '';
-
             that.showStreamerBasedOnGame('all');
         });
 
         // show popup
         this.popover.triggerEl.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
+
             this.popover.toggle();
         });
-
+        
         // hide popup
         $('body').on('click', () => {
             this.popover.close();
@@ -395,7 +392,7 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
         if ($('.live-channel-card').length) {
             doAllotOfPreWork();
 
-            const sf = new StreamFilter(favStreamersLists, 'All', favGames);
+            const sf = new StreamFilter(favStreamersLists, 'all', favGames);
 
             console.log(sf);
 
@@ -405,6 +402,9 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
                 }
                 if (e.key === 'Escape') {
                     sf.popover.close();
+                }
+                if (e.key === 'l') {
+                    console.log(sf);
                 }
             });
 
