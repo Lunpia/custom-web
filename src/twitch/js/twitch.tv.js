@@ -60,18 +60,18 @@ const doAllotOfPreWork = () => {
 
         <div id="filter-game-popover" class="popover" role="tooltip">
             <form clas="hopp__form">
-                <div class="hopp__form__group">
-                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
-                    <label class="hopp__form__label" for="all">All</label>
+            
+            <h3 class="hopp__form__title">Search</h3>
+                <div class="hopp__form__form-group">
+                    <div class="hopp__form__input-group">
+                        <input class="hopp__form__text" type="text" id="search" name="search" placeholder="Search game" autocomplete="off">
+                        <div class="hopp__form__icon" data-hopp-clear-search="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+                    </div>
                 </div>
                 
-                <div class="hopp__form__group hopp__form__group--fav">
-                    <h3 class="hopp__form__title">Favourite Games</h3>
-                </div>
+                <h3 class="hopp__form__title hopp__form__title--fav">Favourite Games</h3>
 
-                <div class="hopp__form__group hopp__form__group--other">
-                    <h3 class="hopp__form__title">Other Games</h3>
-                </div>
+                <h3 class="hopp__form__title hopp__form__title--other">Other Games</h3>
             </form>
         </div>
     `;
@@ -103,6 +103,8 @@ class StreamFilter {
         this.initPopover();
         this.fillGameFilter();
         this.showStreamerBasedOnGame(this.activeGameFilter);
+
+        this.popover.open();
 
         this.initListeners();
     }
@@ -194,14 +196,16 @@ class StreamFilter {
         $(`div[data-hopp-layout="${layoutType}"]`).removeClass('hide');
     }
     
-    showStreamerBasedOnGame (filterGame) {
+    showStreamerBasedOnGame (filterGame, contains = false) {
         const that = this;
         this.activeGameFilter = filterGame.toLowerCase();
+
+        console.log(this.activeGameFilter);
 
         this.showLayout('grid');
         
         // set checked
-        $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', 'No playing a game');
+        $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', '');
 
         if (this.activeGameFilter === 'all') {
             $('.hopp__streamer').show();
@@ -213,6 +217,11 @@ class StreamFilter {
             const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
 
             streamEl.hide();
+
+            if (contains && streamerGame.includes(filterGame)){
+                streamEl.show();
+                return
+            }
 
             if (that.activeGameFilter === streamerGame) {
                 streamEl.show();
@@ -243,29 +252,49 @@ class StreamFilter {
     }
 
     fillGameFilter () {
-        let favGamesHtml = '';
-        let otherGamesHtml = '';
+        
+        // fav games
+        const favGames = document.createElement('div');
+        $(favGames).addClass('hopp__form__form-group');
 
         this.availablebFavGames.forEach(game => { 
             const gameLC = game.toLowerCase();
             
-            favGamesHtml += `
-            <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${gameLC}">
-            <label class="hopp__form__label" for="${gameLC}">${game}</label>
+            favGames.innerHTML += `
+                <div class="hopp__form__input-group">
+                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${gameLC}">
+                    <label class="hopp__form__label" for="${gameLC}">${game}</label>
+                </div>
             `;
         });
+        
+        insertAfter(favGames, $('.hopp__form__title--fav')[0]);
+
+
+
+        // other games
+        const otherGames = document.createElement('div');
+        $(otherGames).addClass('hopp__form__form_group');
+
+        otherGames.innerHTML += `
+            <div class="hopp__form__input-group">
+                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
+                <label class="hopp__form__label" for="all">All</label>
+            </div>
+        `;
 
         this.allGamesWithoutFav.forEach(game => { 
             const gameLC = game.toLowerCase();
-
-            otherGamesHtml += `
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${game}">
-                <label class="hopp__form__label" for="${gameLC}">${game}</label>
-             `;
+            
+            otherGames.innerHTML += `
+                <div class="hopp__form__input-group">
+                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${gameLC}">
+                    <label class="hopp__form__label" for="${gameLC}">${game}</label>
+                </div>
+            `;
         });
-
-        $('.hopp__form__group--fav')[0].innerHTML += favGamesHtml;
-        $('.hopp__form__group--other')[0].innerHTML += otherGamesHtml;
+        
+        insertAfter(otherGames, $('.hopp__form__title--other')[0]);
     }
 
     initPopover () {
@@ -281,15 +310,31 @@ class StreamFilter {
         // change layout
         $('div[data-hopp-layout-toggeler]').on('click', function() {
             const layoutType = $(this).data('hoppLayoutToggeler'); 
-
             that.showLayout(layoutType);
         });
 
         // filtering
-        $('#filter-game-popover input').on('click', function() {
+        $('#filter-game-popover .hopp__form__radio').on('click', function() {
             const filterName = $(this)[0].value;
-
             that.showStreamerBasedOnGame(filterName);
+        });
+        
+        // searching
+        $('.hopp__form__text').on('input click', function(e) {
+            e.stopPropagation();
+            const text = e.currentTarget.value;
+            that.showStreamerBasedOnGame(text, true);
+        });
+
+        // clear search
+        $('[data-hopp-clear-search]').on('click', function(e) {
+            e.stopPropagation();
+
+            const clearThisID = $(this).attr('data-hopp-clear-search');
+
+            $(`#${clearThisID}`)[0].value = '';
+
+            that.showStreamerBasedOnGame('all');
         });
 
         // show popup
@@ -304,7 +349,6 @@ class StreamFilter {
         });
     }
 }
-
 class Popover {
     constructor (triggerEl, popoverEl, activeClass = 'active', scrollToTop = false) {
         this.triggerEl = triggerEl;
@@ -355,7 +399,7 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
 
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'f') {
-                    sf.popover.toggle();
+                    sf.popover.open();
                 }
                 if (e.key === 'Escape') {
                     sf.popover.close();

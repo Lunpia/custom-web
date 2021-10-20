@@ -1,5 +1,6 @@
 .popover {
     position: relative;
+    user-select: none;
     display: flex;
     align-items: center;
     padding: 15px 20px;
