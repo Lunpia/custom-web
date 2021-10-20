@@ -22,3 +22,8 @@
 #emote-menu-button {
 	opacity: 0.2 !important;
 }
+
+// top-bar dots added by twitch on smaller screen
+.ScCoreLink-sc-udwpw5-0.iImPIs,tw-link {
+	display: none;
+}

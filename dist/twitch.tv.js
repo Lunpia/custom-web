@@ -53,15 +53,15 @@ const doAllotOfPreWork = () => {
                 
             <div class="hopp__top-bar__icon-list hopp__icon-list"> 
                 <div class="hopp__icon-list__item" id="filter-game" aria-describedby="filter-game-popover" title="Filters"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 18H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="hopp__icon-list__item" title="Favourites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-                <div class="hopp__icon-list__item" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+                <!-- <div class="hopp__icon-list__item" title="Favourites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>-->
+                <!-- <div class="hopp__icon-list__item" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>-->
             </div>
         </div>
 
         <div id="filter-game-popover" class="popover" role="tooltip">
             <form clas="hopp__form">
                 <div class="hopp__form__group">
-                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="All">
+                    <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
                     <label class="hopp__form__label" for="all">All</label>
                 </div>
                 
@@ -78,6 +78,9 @@ const doAllotOfPreWork = () => {
 
     // rename streamer element
     $('.live-channel-card').parent().addClass('hopp__streamer');
+
+    // add grid class to default vieuw
+    $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)').addClass('hopp__layout hopp__layout-grid').attr('data-hopp-layout', 'grid');
 }
 class StreamFilter {
     constructor (listsOfFavStreamers, activeGameFilter = 'All', favGames) {
@@ -158,9 +161,6 @@ class StreamFilter {
     }
 
     renderTable () {
-        const originalLayout = $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)');
-        originalLayout.addClass('hopp__layout hopp__layout-grid').attr('data-hopp-layout', 'grid');
-
         // create table
         const table = document.createElement('div');
         $(table).addClass('hopp__layout hopp__layout-table').attr('data-hopp-layout', 'table');
@@ -181,7 +181,7 @@ class StreamFilter {
             `;
         });
 
-        insertAfter(table, originalLayout[0]);
+        insertAfter(table, $(`div[data-hopp-layout="grid"]`)[0]);
     }
 
     showLayout (layoutType) {
@@ -195,26 +195,26 @@ class StreamFilter {
     }
     
     showStreamerBasedOnGame (filterGame) {
-        this.activeGameFilter = filterGame;
+        const that = this;
+        this.activeGameFilter = filterGame.toLowerCase();
 
         this.showLayout('grid');
         
         // set checked
         $(`#filter-game-popover .hopp__form__radio[value="${this.activeGameFilter}"`).attr('checked', 'No playing a game');
 
-        if (filterGame === 'All') {
+        if (this.activeGameFilter === 'all') {
             $('.hopp__streamer').show();
-             
             return
         }
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
+            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
 
             streamEl.hide();
 
-            if (filterGame === streamerGame) {
+            if (that.activeGameFilter === streamerGame) {
                 streamEl.show();
             }
         });
@@ -247,15 +247,20 @@ class StreamFilter {
         let otherGamesHtml = '';
 
         this.availablebFavGames.forEach(game => { 
+            const gameLC = game.toLowerCase();
+            
             favGamesHtml += `
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
-                <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
-             `;
+            <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${gameLC}">
+            <label class="hopp__form__label" for="${gameLC}">${game}</label>
+            `;
         });
+
         this.allGamesWithoutFav.forEach(game => { 
+            const gameLC = game.toLowerCase();
+
             otherGamesHtml += `
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${game.toLocaleLowerCase()}" name="game" value="${game}">
-                <label class="hopp__form__label" for="${game.toLocaleLowerCase()}">${game}</label>
+                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="${gameLC}" name="game" value="${game}">
+                <label class="hopp__form__label" for="${gameLC}">${game}</label>
              `;
         });
 
