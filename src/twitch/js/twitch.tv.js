@@ -314,8 +314,9 @@ class StreamFilter {
         });
 
         // filtering
-        $('#filter-game-popover .hopp__form__radio').on('click', function() {
-            const filterName = $(this)[0].value;
+        $('#filter-game-popover .hopp__form__input-group').on('click', function(e) {
+            e.stopPropagation();
+            const filterName = $(this).find('.hopp__form__radio')[0].value;
             that.showStreamerBasedOnGame(filterName);
         });
         
