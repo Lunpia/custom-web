@@ -197,7 +197,7 @@ class StreamFilter {
         $(`div[data-hopp-layout="${layoutType}"]`).removeClass('hide');
     }
     
-    showStreamerBasedOnString (filterString) {
+    showStreamerBasedOnString (filterString = 'all') {
         const that = this;
 
         console.log(filterString);
