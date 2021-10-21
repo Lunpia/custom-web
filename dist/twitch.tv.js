@@ -209,6 +209,7 @@ class StreamFilter {
         $(`#filter-game-popover .hopp__form__radio[value="${filterString}"`).prop('checked', true);
 
         if (filterString === 'all') {
+            this.activeFilter = 'all';
             $('.hopp__streamer').show();
             return
         }
