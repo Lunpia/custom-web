@@ -211,6 +211,7 @@ class StreamFilter {
         if (filterString === 'all') {
             this.activeFilter = 'all';
             $('.hopp__streamer').show();
+
             return
         }
 
@@ -219,14 +220,16 @@ class StreamFilter {
             const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
             const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
 
-            streamEl.hide();
-
             if (game.includes(filterString) || name.includes(filterString)){
                 console.log(`Game found: ${game}`);
                 console.log(`User found: ${name}`);
                 that.activeFilter = game;
                 streamEl.show();
+
+                return
             }
+
+            streamEl.hide();
         });
     }
 
@@ -258,6 +261,13 @@ class StreamFilter {
         const favGames = document.createElement('div');
         $(favGames).addClass('hopp__form__form-group');
 
+        favGames.innerHTML += `            
+            <div class="hopp__form__input-group">
+                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
+                <label class="hopp__form__label" for="all">All</label>
+            </div>
+        `;
+
         this.availablebFavGames.forEach(game => { 
             const gameLC = game.toLowerCase();
             
@@ -276,13 +286,6 @@ class StreamFilter {
         // other games
         const otherGames = document.createElement('div');
         $(otherGames).addClass('hopp__form__form_group');
-
-        otherGames.innerHTML += `            
-            <div class="hopp__form__input-group">
-                <input class="hopp__form__radio hopp__form__radio--hidden" type="radio" id="all" name="game" value="all">
-                <label class="hopp__form__label" for="all">All</label>
-            </div>
-        `;
 
         this.allGamesWithoutFav.forEach(game => { 
             const gameLC = game.toLowerCase();
