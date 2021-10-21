@@ -25,8 +25,10 @@ const favStreamersLists = [
             'faide',
             'HAchubby',
             'xqcow',
+            'aceu',
             'eskay',
             'mL7support',
+            'randy',
             'taxi2g',
             'emongg',
             'redshell',
@@ -65,11 +67,11 @@ const doAllotOfPreWork = () => {
             <h3 class="hopp__form__title">Search</h3>
                 <div class="hopp__form__form-group">
                     <div class="hopp__form__input-group">
-                        <input class="hopp__form__text" type="text" id="search" name="search" placeholder="Search game" autocomplete="off">
+                        <input class="hopp__form__text" type="text" id="search" name="search" placeholder="Game or Streamer" autocomplete="off">
                         <div class="hopp__form__icon" data-hopp-clear-search="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
                     </div>
                 </div>
-                
+
                 <h3 class="hopp__form__title hopp__form__title--fav">Favourite Games</h3>
 
                 <h3 class="hopp__form__title hopp__form__title--other">Other Games</h3>
@@ -84,7 +86,7 @@ const doAllotOfPreWork = () => {
     $('.Layout-sc-nxg1ff-0.fLCwOX > div:nth-child(3)').addClass('hopp__layout hopp__layout-grid').attr('data-hopp-layout', 'grid');
 }
 class StreamFilter {
-    constructor (listsOfFavStreamers, activeGameFilter = 'All', favGames) {
+    constructor (listsOfFavStreamers, activeFilter = 'all', favGames) {
         this.originalStreamerData = this.getOriginalStreamerData();
         this.listsOfFavStreamers = listsOfFavStreamers;
         this.favGames = favGames;
@@ -92,7 +94,7 @@ class StreamFilter {
         this.allGames = this.getAllGames();
         this.availablebFavGames = this.getAvailablebFavGames();
         this.allGamesWithoutFav = this.getAllGamesWithoutFav();
-        this.activeGameFilter = activeGameFilter;
+        this.activeFilter = activeFilter;
 
         this.init();
     }
@@ -103,7 +105,7 @@ class StreamFilter {
         this.showLayout('grid');
         this.initPopover();
         this.fillGameFilter();
-        this.showStreamerBasedOnGame(this.activeGameFilter);
+        this.showStreamerBasedOnString(this.activeFilter);
 
         this.initListeners();
     }
@@ -113,13 +115,13 @@ class StreamFilter {
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText || '';
+            const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText;
             const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0] ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
-            const title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText || '';
-            const thumbnail = streamEl.find($('.tw-image'))[1].src || '';
-            const avatar = streamEl.find($('.tw-image'))[0].src || '';
-            const viewers = streamEl.find($('.ScMediaCardStatWrapper-sc-1ncw7wk-0.bfxdoE.tw-media-card-stat p'))[0].innerHTML.replace(/viewers/g,'') || '';
-            const url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href || '';
+            const title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText;
+            const thumbnail = streamEl.find($('.tw-image'))[1].src;
+            const avatar = streamEl.find($('.tw-image'))[0].src;
+            const viewers = streamEl.find($('.ScMediaCardStatWrapper-sc-1ncw7wk-0.bfxdoE.tw-media-card-stat p'))[0].innerHTML.replace(/viewers/g,'');
+            const url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href;
 
             streamerData.push(
                 {
@@ -195,31 +197,33 @@ class StreamFilter {
         $(`div[data-hopp-layout="${layoutType}"]`).removeClass('hide');
     }
     
-    showStreamerBasedOnGame (filterGame) {
+    showStreamerBasedOnString (filterString) {
         const that = this;
 
-        console.log(filterGame);
+        console.log(filterString);
 
         this.showLayout('grid');
         
         // set checked
         $(`#filter-game-popover .hopp__form__radio`).prop('checked', false);
-        $(`#filter-game-popover .hopp__form__radio[value="${filterGame}"`).prop('checked', true);
+        $(`#filter-game-popover .hopp__form__radio[value="${filterString}"`).prop('checked', true);
 
-        if (filterGame === 'all') {
+        if (filterString === 'all') {
             $('.hopp__streamer').show();
             return
         }
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const streamerGame = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
+            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
+            const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
 
             streamEl.hide();
 
-            if (streamerGame.includes(filterGame)){
-                console.log(`found: ${streamerGame}`);
-                that.activeGameFilter = streamerGame;
+            if (game.includes(filterString) || name.includes(filterString)){
+                console.log(`Game found: ${game}`);
+                console.log(`User found: ${name}`);
+                that.activeFilter = game;
                 streamEl.show();
             }
         });
@@ -315,7 +319,7 @@ class StreamFilter {
             // e.stopImmediatePropagation(); // don't close on click
             
             const filterName = $(this).find('.hopp__form__radio')[0].value;
-            that.showStreamerBasedOnGame(filterName);
+            that.showStreamerBasedOnString(filterName);
         });
         
         // searching
@@ -323,7 +327,7 @@ class StreamFilter {
             e.stopImmediatePropagation();
 
             const typedText = e.currentTarget.value;
-            that.showStreamerBasedOnGame(typedText);
+            that.showStreamerBasedOnString(typedText);
         });
 
         // clear search
@@ -332,7 +336,7 @@ class StreamFilter {
 
             const clearThisID = $(this).attr('data-hopp-clear-search');
             $(`#${clearThisID}`)[0].value = '';
-            that.showStreamerBasedOnGame('all');
+            that.showStreamerBasedOnString('all');
         });
 
         // show popup
@@ -396,14 +400,14 @@ if (window.location.href == 'https://www.twitch.tv/directory/following/live') {
 
             console.log(sf);
 
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'f') {
+            window.addEventListener('keydown', ({ key } = e) => {
+                if (key === 'f' || key === 'F') {
                     sf.popover.open();
                 }
-                if (e.key === 'Escape') {
+                if (key === 'Escape') {
                     sf.popover.close();
                 }
-                if (e.key === 'l') {
+                if (key === 'l' || key === 'L') {
                     console.log(sf);
                 }
             });
