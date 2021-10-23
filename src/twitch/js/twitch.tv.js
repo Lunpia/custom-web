@@ -4,7 +4,7 @@
 const favStreamersLists = [
     {
         title: 'Sicko Males',
-        cssClass: 'sick-males',
+        cssClass: 'sicko-males',
         streamers: [
             'Lekkerspelen',
             'ethotv'
@@ -25,6 +25,8 @@ const favStreamersLists = [
             'faide',
             'HAchubby',
             'xqcow',
+            'philza',
+            'Mande1',
             'aceu',
             'eskay',
             'mL7support',
