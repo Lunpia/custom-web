@@ -223,7 +223,7 @@ class StreamFilter {
             if (game.includes(filterString) || name.includes(filterString)){
                 console.log(`Game found: ${game}`);
                 console.log(`User found: ${name}`);
-                that.activeFilter = game;
+                that.activeFilter = filterString;
                 streamEl.show();
 
                 return
