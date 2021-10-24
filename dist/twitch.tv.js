@@ -26,7 +26,7 @@ const favStreamersLists = [
             'HAchubby',
             'xqcow',
             'philza',
-            'Mande1',
+            'Mande',
             'aceu',
             'eskay',
             'mL7support',
