@@ -219,7 +219,7 @@ class StreamFilter {
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const game = (streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0]) ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase() : 'Other';
+            const game = streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText.toLowerCase();
             const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText.toLowerCase();
 
             if (game.includes(filterString) || name.includes(filterString)){
@@ -382,7 +382,6 @@ class Popover {
         this.popperInstance.update();
         
         setTimeout(() => {
-            console.log(this.focusElementOnOpen);
             this.focusElementOnOpen.focus();
         }, 100);
         
