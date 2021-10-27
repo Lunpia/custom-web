@@ -38,7 +38,7 @@ const favStreamersLists = [
     },
 ]
 
-const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'ASMR', 'Rocket League', 'Software and Game Development']
+const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'Rocket League', 'Software and Game Development']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -307,7 +307,7 @@ class StreamFilter {
         const filterTrigger = document.querySelector('#filter-game');
         const filterPopover = document.querySelector('#filter-game-popover');
 
-        this.popover = new Popover(filterTrigger, filterPopover, undefined, false);
+        this.popover = new Popover(filterTrigger, filterPopover, undefined, false, $('.hopp__form__text'));
     }
 
     initListeners () {
@@ -359,7 +359,7 @@ class StreamFilter {
     }
 }
 class Popover {
-    constructor (triggerEl, popoverEl, activeClass = 'active', scrollToTop = false) {
+    constructor (triggerEl, popoverEl, activeClass = 'active', scrollToTop = false, focusElementOnOpen = '') {
         this.triggerEl = triggerEl;
         this.popoverEl = popoverEl;
         this.popperInstance = Popper.createPopper(this.triggerEl, this.popoverEl, {
@@ -368,6 +368,7 @@ class Popover {
         this.activeClass = activeClass;
         this.scrollToTop = scrollToTop;
         this.isOpen = false;
+        this.focusElementOnOpen = focusElementOnOpen;
     }
 
     toggle () {
@@ -379,6 +380,11 @@ class Popover {
         this.triggerEl.classList.add(this.activeClass);
         this.popoverEl.setAttribute('data-show', '');
         this.popperInstance.update();
+        
+        setTimeout(() => {
+            console.log(this.focusElementOnOpen);
+            this.focusElementOnOpen.focus();
+        }, 100);
         
         if (this.scrollToTop) {
             this.popoverEl.scrollTop = 0;
