@@ -1,0 +1,49 @@
+html body {
+    width: 1600px;
+    height: 720px;
+
+    .top-nav,
+    #sideNav {
+        display: none;
+    }
+
+
+    // player
+    .channel-root--hold-chat+.persistent-player, .channel-root--watch-chat+.persistent-player, .channel-root__info--with-chat .channel-info-content, .channel-root__player--with-chat {
+        width: calc(100% - 322px);
+    }
+
+    // chat header title
+    .Layout-sc-nxg1ff-0.iRKwmD.video-chat__header {
+        display: none !important;
+    }
+    // icon
+    .InjectLayout-sc-588ddc-0.jMckqP.right-column__toggle-visibility.toggle-visibility__right-column.toggle-visibility__right-column--expanded {
+        display: none !important;
+    }
+
+    // chat container
+    .right-column--beside .channel-root__right-column {
+        width: 322px;
+    }
+    .channel-root__right-column.channel-root__right-column--expanded {
+        transform: translateX(-322px) translateZ(0px) !important;
+    }
+    .hTAzbd {
+        background-color: black !important;
+    }
+
+    // message
+    .Layout-sc-nxg1ff-0.lgtHpz {
+        font-size: 18px;
+        padding: 3px 10px;
+    }
+    span.text-fragment {
+        line-height: 30px;
+    }
+
+    // timestamp
+    .Layout-sc-nxg1ff-0.fUkTWb {
+        display: none;
+    }
+}

@@ -25,6 +25,8 @@ const favStreamersLists = [
             'faide',
             'HAchubby',
             'xqcow',
+            'FoxenKin',
+            'stormen',
             'philza',
             'Mande',
             'aceu',
@@ -117,13 +119,25 @@ class StreamFilter {
 
         $('.hopp__streamer').each(function (i) {
             const streamEl = $(this);
-            const name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText;
-            const game = (streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0]) ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
-            const title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText;
-            const thumbnail = streamEl.find($('.tw-image'))[1].src;
-            const avatar = streamEl.find($('.tw-image'))[0].src;
-            const viewers = streamEl.find($('.ScMediaCardStatWrapper-sc-1ncw7wk-0.bfxdoE.tw-media-card-stat p'))[0].innerHTML.replace(/viewers/g,'');
-            const url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href;
+            
+            // for quick debugging purpouse
+            let name = '';
+            let game = '';
+            let title = '';
+            let thumbnail = '';
+            let avatar = '';
+            let viewers = '';
+            let url = '';
+            
+            name = streamEl.find($('a[data-a-target="preview-card-channel-link"]'))[0].innerText;
+            game = (streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0]) ? streamEl.find($('a[data-a-target="preview-card-game-link"]'))[0].innerText : 'Other';
+            title = streamEl.find($('a[data-a-target="preview-card-title-link"] h3'))[0].innerText;
+            thumbnail = streamEl.find($('.tw-image'))[1].src;
+            avatar = streamEl.find($('.tw-image'))[0].src;
+            viewers = streamEl.find($('.tw-media-card-stat'))[0].innerHTML.replace(/ viewers/g,'');
+            url = streamEl.find($('a[data-a-target="preview-card-image-link'))[0].href;
+            
+            console.log();
 
             streamerData.push(
                 {
