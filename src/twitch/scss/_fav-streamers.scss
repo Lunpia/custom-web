@@ -26,7 +26,42 @@
 	}
 }
 
-.sicko-males { @include fav-streamer(gold) };
-.beta-tier { @include fav-streamer(orange) };
+.sicko-males { @include fav-streamer(rgb(71, 19, 119)) };
+.beta-tier { @include fav-streamer(rgb(81, 35, 155)) };
 .overwatch { @include fav-streamer(darkorange) };
 .lol { @include fav-streamer(#68b9ea) };
+
+.ksFrFH {
+    background-color: #5c16c5 !important;
+    color: var(--color-text-button-primary);
+}
+
+.bjjKun {
+    fill: #5c16c5 !important;
+}
+
+Body {
+	.iyBJMB {
+   		-webkit-box-flex: 0 !important;
+    	flex-grow: 0 !important;
+   		color: #5c16c5  !important;
+   		-webkit-box-align: center !important;
+   		align-items: center !important;
+    	-webkit-box-pack: center !important;
+    	justify-content: center !important;
+    	height: 100% !important;
+	}
+
+	a {
+		color: #00a0bd;
+		color: var(--color-text-link);
+		text-decoration: none;
+			.tw-root--theme-dark .navigation-link.active, .tw-root--theme-dark .navigation-link:hover {
+				color: #5c16c5 !important;
+	}
+			.tw-root--theme-dark .navigation-link__active-indicator {
+				background-color: #5c16c5 !important;
+	}	
+
+}	
+}

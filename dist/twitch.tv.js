@@ -7,7 +7,10 @@ const favStreamersLists = [
         cssClass: 'sicko-males',
         streamers: [
             'Lekkerspelen',
-            'ethotv'
+            'ethotv',
+            'Robbsnor',
+            'GoodTimesWithScar',
+            'ImpulseSV',
         ],
     },    
     {
@@ -40,7 +43,7 @@ const favStreamersLists = [
     },
 ]
 
-const favGames = ['Apex Legends', 'Call of Duty: Black Ops', 'Overwatch', 'Phasmophobia', 'Rocket League', 'Software and Game Development']
+const favGames = ['Minecraft', 'Just Chatting','GeoGuessr','Crab Game', 'Software and Game Development']
 
 const insertAfter = (newNode, referenceNode) => {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
